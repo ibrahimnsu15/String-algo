@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Pi / failure function
+void computeLPS(int lps[],char pt[] ,int m){
+    lps[0]=0;
+    int i = 1;
+    int j = 0;
+
+    while(i < m){
+        if(pt[i]==pt[j]){
+            j++;
+            lps[i]=j;
+        }else{
+            while(j > 0 && pt[j] !=pt[i])
+                j=lps[j];
+
+            lps[i]=j;
+        }
+        i++;
+    }
+}
+
+void KMPsearch(char text[], char pt[] , int len_text,int len_pettern){
+
+        int lps[len_pettern+1];
+        computeLPS(lps,pt,len_pettern);
+        int i=0,j=0;
+        cout<<"yess"<<endl;
+        while(i < len_text){
+            if(pt[j] == text[i]){
+                i++;j++;
+            }
+            if(j == len_pettern){
+                cout<<"Match found index "<<i-j<<endl;
+                j = lps[j-1];
+            }else if(i < len_text && pt[j] != text[i]){
+                if(j!=0)
+                    j=lps[j-1];
+                else
+                    i++;
+            }
+        }
+}
+
+int main()
+{
+    char pt[100001];
+    char text[100001];
+//    int len = strlen(pt);
+    scanf("%s %s",text,pt);
+    KMPsearch(text,pt,strlen(text),strlen(pt));
+    return 0;
+}
